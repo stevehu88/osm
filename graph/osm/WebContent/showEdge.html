@@ -1,0 +1,61 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<title>Edge Show</title>
+<meta charset="utf-8" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="http://leafletjs.com/dist/leaflet.css" />
+
+
+
+<style type="text/css">  
+*{margin:0;padding:0;}  
+html,body {height:100%;}  
+</style> 
+
+</head>
+
+
+<body>
+	<div id="map" style="height:100%;width=100%"></div>
+
+	<script src="http://leafletjs.com/dist/leaflet.js"></script>
+	<script
+		src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+	</script>
+	<script>
+	$(document).ready(function(){
+		
+		var map = L.map('map').setView([32.04415, 118.77901], 13);
+
+		L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
+			maxZoom: 18,
+			attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
+				'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+				'Imagery © <a href="http://mapbox.com">Mapbox</a>',
+			id: 'examples.map-i875mjb7'
+		}).addTo(map);
+
+		        $.get("/osm/rest/Edge", function(data, status){
+		            var osmEdges = data.osmEdge;
+		            for(var i = 0 ; i < osmEdges.length; i ++) {
+		            	var edge = osmEdges[i];
+		            	var fromNode = edge.fromNode;
+		            	var toNode = edge.toNode;
+		            	var latlngs = [L.latLng(fromNode.latitude, fromNode.longitude), L.latLng(toNode.latitude, toNode.longitude)];
+		            	
+		            	
+		            	var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
+		            	polyline.bindPopup(edge.newid);
+		            	
+		            }
+		        });
+		});
+	
+		
+	</script>
+</body>
+</html>

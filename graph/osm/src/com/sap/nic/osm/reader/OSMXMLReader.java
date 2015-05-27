@@ -8,7 +8,7 @@ import javax.xml.stream.XMLStreamException;
 
 import com.sap.nic.osm.converter.EdgeProducer;
 import com.sap.nic.osm.converter.NodeConnectionProducer;
-import com.sap.nic.osm.model.OSMEdge;
+import com.sap.nic.osm.model.Section;
 import com.sap.nic.osm.model.OSMEntity;
 import com.sap.nic.osm.model.OSMGraph;
 import com.sap.nic.osm.model.OSMNode;
@@ -157,10 +157,10 @@ public class OSMXMLReader extends XMLReader {
 						if (highway_value != null)
 						{
 							if (highway_value.equals("motorway") || highway_value.equals("motorway_link")
-//									|| highway_value.equals("trunk")   || highway_value.equals("trunk_link")
-//									|| highway_value.equals("primary")    || highway_value.equals("primary_link")
-//									|| highway_value.equals("secondary")    || highway_value.equals("secondary_link")
-//									|| highway_value.equals("tertiary")    || highway_value.equals("tertiary_link")						
+									|| highway_value.equals("trunk")   || highway_value.equals("trunk_link")
+									|| highway_value.equals("primary")    || highway_value.equals("primary_link")
+									|| highway_value.equals("secondary")    || highway_value.equals("secondary_link")
+									|| highway_value.equals("tertiary")    || highway_value.equals("tertiary_link")						
 									){	
 									osmgraph.addWay(way);	
 								}
@@ -204,7 +204,7 @@ public class OSMXMLReader extends XMLReader {
     	OSMXMLReader reader = new OSMXMLReader("nanjing.osm");
     	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
-    	for(OSMEdge edge : osmgraph.getEdges()){
+    	for(Section edge : osmgraph.getEdges()){
     		System.out.println(edge.getNewid() + " " + edge.getNodes().size());
     	}
 

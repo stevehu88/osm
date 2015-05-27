@@ -2,7 +2,7 @@ package com.sap.nic.osm.converter;
 
 import java.util.Vector;
 
-import com.sap.nic.osm.model.OSMEdge;
+import com.sap.nic.osm.model.Section;
 import com.sap.nic.osm.model.OSMGraph;
 import com.sap.nic.osm.model.OSMNode;
 import com.sap.nic.osm.model.OSMWay;
@@ -22,17 +22,17 @@ public class EdgeProducer {
 	}
 	
 	
-	private OSMEdge newEdge = new OSMEdge();
+	private Section newEdge = new Section();
 	private long newid = 1;
 	
-	private void setNewEdgeID(OSMEdge edge) {
+	private void setNewEdgeID(Section edge) {
 		edge.setNewid(newid);
 		newid ++;
 	}
 	
 	
-	private OSMEdge createEdge(OSMNode fromNode, int fromNodeIndex, OSMNode toNode, int toNodeIndex, OSMWay way) {
-		newEdge = new OSMEdge();
+	private Section createEdge(OSMNode fromNode, int fromNodeIndex, OSMNode toNode, int toNodeIndex, OSMWay way) {
+		newEdge = new Section();
 		newEdge.setFromNode(fromNode);
 		newEdge.setToNode(toNode);
 		setNewEdgeID(newEdge);
@@ -61,9 +61,9 @@ public class EdgeProducer {
 	}
 	
 	
-	OSMEdge backEdge;
-	private void createBackEdge(OSMNode fromNode, int fromNodeIndex, OSMNode toNode, int toNodeIndex, OSMWay way, OSMEdge edge) {
-		backEdge = new OSMEdge();
+	Section backEdge;
+	private void createBackEdge(OSMNode fromNode, int fromNodeIndex, OSMNode toNode, int toNodeIndex, OSMWay way, Section edge) {
+		backEdge = new Section();
 		backEdge = createEdge(fromNode, fromNodeIndex,toNode, toNodeIndex,way);
 		
 		backEdge.setBackEdgeId(edge.getNewid());
@@ -73,7 +73,7 @@ public class EdgeProducer {
 	
 	
 	private void buildEdges(OSMWay way, boolean oneway) {
-		OSMEdge tempEdge = new OSMEdge();
+		Section tempEdge = new Section();
 		
 		OSMNode lastUsedNode = way.getFromNode();
 		int lastUsedNodeIndex = 0;

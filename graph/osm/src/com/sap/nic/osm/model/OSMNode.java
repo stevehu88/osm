@@ -15,7 +15,7 @@ public class OSMNode extends OSMEntity{
 	    private double longitude;
 	    private ArrayList<OSMNode> succNodeList = new ArrayList<>();
 	    private ArrayList<OSMNode> predNodeList = new ArrayList<>();
-	    private ArrayList<OSMEdge> outgoingEdge = new ArrayList<>();
+	    private ArrayList<Section> outgoingEdge = new ArrayList<>();
 	    
 	    
 	    public double getLatitude() {
@@ -52,11 +52,11 @@ public class OSMNode extends OSMEntity{
 	    }
 	    
 	    
-		public ArrayList<OSMEdge> getOutgoingEdge() {
+		public ArrayList<Section> getOutgoingEdge() {
 			return outgoingEdge;
 		}
 		
-		public void addOutgoingEdge(OSMEdge edge) {
+		public void addOutgoingEdge(Section edge) {
 			this.outgoingEdge.add(edge);
 		}
 	    

@@ -9,7 +9,7 @@ import javax.ws.rs.core.GenericEntity;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.sap.nic.osm.model.OSMEdge;
+import com.sap.nic.osm.model.Section;
 import com.sap.nic.osm.model.OSMGraph;
 import com.sap.nic.osm.reader.OSMXMLReader;
 
@@ -28,8 +28,8 @@ public class EdgeResource {
 		OSMXMLReader reader = new OSMXMLReader(path);
     	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
-    	ArrayList<OSMEdge> list = osmgraph.getEdges();
-    	GenericEntity entity = new GenericEntity<List<OSMEdge>>(list) {};
+    	ArrayList<Section> list = osmgraph.getEdges();
+    	GenericEntity entity = new GenericEntity<List<Section>>(list) {};
     	return Response.ok(entity).build();
 	}
 }

@@ -29,7 +29,7 @@ html,body {height:100%;}
 	<script>
 	$(document).ready(function(){
 		
-		var map = L.map('map').setView([32.04415, 118.77901], 13);
+		var map = L.map('map').setView([32.04415, 118.77901], 16);
 
 		L.tileLayer('https://{s}.tiles.mapbox.com/v3/{id}/{z}/{x}/{y}.png', {
 			maxZoom: 18,
@@ -43,14 +43,46 @@ html,body {height:100%;}
 		            var osmEdges = data.osmEdge;
 		            for(var i = 0 ; i < osmEdges.length; i ++) {
 		            	var edge = osmEdges[i];
-		            	var fromNode = edge.fromNode;
-		            	var toNode = edge.toNode;
-		            	var latlngs = [L.latLng(fromNode.latitude, fromNode.longitude), L.latLng(toNode.latitude, toNode.longitude)];
+//		            	var fromNode = edge.fromNode;
+//		            	var toNode = edge.toNode;
+//		            	var latlngs = [L.latLng(fromNode.latitude, fromNode.longitude), L.latLng(toNode.latitude, toNode.longitude)];
+						var latlngs = [];
+						for(var j = 0; j < edge.nodes.length; j ++)
+						{
+							var node = edge.nodes[j];
+							latlngs.push(L.latLng(node.latitude, node.longitude));
+						}
+
+		            	
+		            	var defaultStyle = {
+								color: 'red',
+								weight: 5,
+								opacity: 0.6
+		            	};
+		            	
+		            	var highlightStyle = {
+		            		    color: 'green',
+		            		    weight: 8,
+		            		    opacity: 0.9
+		            		};
 		            	
 		            	
-		            	var polyline = L.polyline(latlngs, {color: 'red'}).addTo(map);
-		            	polyline.bindPopup(edge.newid);
+		            	var polyline = L.polyline(latlngs, defaultStyle).addTo(map);
+		            	polyline.selected = false;
 		            	
+		            	polyline.on('click', function(e) {
+		            		if (polyline.selected)
+		            		{
+		            			polyline.selected = false;
+		            			e.target.setStyle(defaultStyle);
+		            		}
+		            		else
+		            		{
+		            			polyline.selected = true;
+		            			e.target.setStyle(highlightStyle);
+		            		}
+		            		
+		            	});
 		            }
 		        });
 		});

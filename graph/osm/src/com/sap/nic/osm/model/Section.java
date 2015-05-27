@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
  * 
  */
 @XmlRootElement
-public class OSMEdge {
+public class Section {
 	
 	private OSMNode fromNode;
 	private OSMNode toNode;

@@ -17,7 +17,7 @@ public class OSMGraph extends Graph {
     private HashMap<Long, OSMRelation> relations = new HashMap<>();
     private final HashMap<Long, OSMNode> nodes = new HashMap<>();
     
-    private final ArrayList<OSMEdge> edges = new ArrayList<>();
+    private final ArrayList<Section> edges = new ArrayList<>();
     
     public OSMNode getNode(long id) {
         return nodes.get(id);
@@ -87,11 +87,11 @@ public class OSMGraph extends Graph {
         return ids;
     }
     
-    public void addEdge(OSMEdge edge) {
+    public void addEdge(Section edge) {
     	this.edges.add(edge);
     }
 
-	public ArrayList<OSMEdge> getEdges() {
+	public ArrayList<Section> getEdges() {
 		return edges;
 	}
 

@@ -28,7 +28,7 @@ public class EdgeResource {
 		OSMXMLReader reader = new OSMXMLReader(path);
     	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
-    	ArrayList<Section> list = osmgraph.getEdges();
+    	ArrayList<Section> list = osmgraph.getSections();
     	GenericEntity entity = new GenericEntity<List<Section>>(list) {};
     	return Response.ok(entity).build();
 	}

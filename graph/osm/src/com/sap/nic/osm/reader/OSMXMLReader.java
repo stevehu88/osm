@@ -12,7 +12,6 @@ import com.sap.nic.osm.model.Section;
 import com.sap.nic.osm.model.OSMEntity;
 import com.sap.nic.osm.model.OSMGraph;
 import com.sap.nic.osm.model.OSMNode;
-import com.sap.nic.osm.model.OSMRelation;
 import com.sap.nic.osm.model.OSMWay;
 
 /**
@@ -60,28 +59,12 @@ public class OSMXMLReader extends XMLReader {
 		}
 	}
 
-	private void readMember(OSMRelation relation) {
-		if (parser.getAttributeValue(null, "type").equals("node")) {
-			relation.addMember(osmgraph.getNode(Long.parseLong(parser
-					.getAttributeValue(null, "ref"))), parser
-					.getAttributeValue(null, "role"));
-		} else if (parser.getAttributeValue(null, "type").equals("way")) {
-			relation.addMember(osmgraph.getWay(Long.parseLong(parser
-					.getAttributeValue(null, "ref"))), parser
-					.getAttributeValue(null, "role"));
-		} else if (parser.getAttributeValue(null, "type").equals("relation")) {
-			relation.addMember(osmgraph.getRelation(Long.parseLong(parser
-					.getAttributeValue(null, "ref"))), parser
-					.getAttributeValue(null, "role"));
-		}
-	}
 
 	@Override
 	public void parseXML() {
 		String xmlelement;
 		OSMNode node = new OSMNode();
 		OSMWay way = new OSMWay();
-		OSMRelation relation = new OSMRelation();
 		HashMap<String, String> hashmap = new HashMap<>();
 
 		try {
@@ -107,16 +90,7 @@ public class OSMXMLReader extends XMLReader {
 						readAttributes(way);
 					}
 
-					if (xmlelement.equals("relation")) {
-						relation = new OSMRelation();
-						hashmap = new HashMap<>();
-						readAttributes(relation);
-					}
-
-					if (xmlelement.equals("member")) {
-						readMember(relation);
-					}
-
+					
 					if (xmlelement.equals("bounds")) {
 						osmgraph.setBbbottom(Double.parseDouble(parser
 								.getAttributeValue(null, "minlat")));
@@ -139,11 +113,6 @@ public class OSMXMLReader extends XMLReader {
 						System.out.println(parser.getAttributeValue(null, "k") + "  " + parser.getAttributeValue(null, "v"));
 					}
 
-					if (xmlelement.equals("relation")) {
-						relation = new OSMRelation();
-						hashmap = new HashMap<>();
-						readAttributes(relation);
-					}
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 					if (parser.getLocalName() == "node") {
@@ -166,13 +135,8 @@ public class OSMXMLReader extends XMLReader {
 								}
 						}
 
-
 					}
 
-					if (parser.getLocalName().equals("relation")) {
-						relation.setHashmap(hashmap);
-						osmgraph.addRelation(relation);
-					}
 					break;
 
 				}
@@ -204,7 +168,7 @@ public class OSMXMLReader extends XMLReader {
     	OSMXMLReader reader = new OSMXMLReader("nanjing.osm");
     	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
-    	for(Section edge : osmgraph.getEdges()){
+    	for(Section edge : osmgraph.getSections()){
     		System.out.println(edge.getNewid() + " " + edge.getNodes().size());
     	}
 

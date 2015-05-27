@@ -37,7 +37,7 @@ public class EdgeProducer {
 		newEdge.setToNode(toNode);
 		setNewEdgeID(newEdge);
 		
-		osmgraph.addEdge(newEdge);
+		osmgraph.addSection(newEdge);
 		fromNode.addOutgoingEdge(newEdge);
 		newEdge.addWay(way);
 		

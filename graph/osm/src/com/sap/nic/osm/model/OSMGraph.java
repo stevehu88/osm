@@ -14,10 +14,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class OSMGraph extends Graph {
     private final HashMap<Long, OSMWay> ways = new HashMap<>();
-    private HashMap<Long, OSMRelation> relations = new HashMap<>();
     private final HashMap<Long, OSMNode> nodes = new HashMap<>();
     
-    private final ArrayList<Section> edges = new ArrayList<>();
+    private final ArrayList<Section> sections = new ArrayList<>();
     
     public OSMNode getNode(long id) {
         return nodes.get(id);
@@ -45,35 +44,12 @@ public class OSMGraph extends Graph {
         return ways.get(id);
     }
 
-    public OSMRelation getRelation(long id) {
-        return relations.get(id);
-    }
-
-    public  HashMap<Long, OSMRelation> getRelationsAshashmap() {
-        return relations;
-    }
-
-    public void setRelations( HashMap<Long, OSMRelation> relations) {
-        this.relations = relations;
-    }
 
     public OSMWay[] getWays() {
         OSMWay[] wayarray= new OSMWay[ways.size()];
         return ways.values().toArray(wayarray);
     }
 
-    public void addRelation(OSMRelation relation) {
-        relations.put(relation.getId(), relation);
-    }
-
-    public OSMRelation[] getRelations(){
-        OSMRelation[] relationarray = new OSMRelation[relations.size()];
-        return relations.values().toArray(relationarray);
-    }
-
-    public Collection<OSMRelation> getRelationsCollection() {
-        return relations.values();
-    }
 
     public boolean hasNode(Long id) {
         return nodes.containsKey(id);
@@ -87,12 +63,12 @@ public class OSMGraph extends Graph {
         return ids;
     }
     
-    public void addEdge(Section edge) {
-    	this.edges.add(edge);
+    public void addSection(Section section) {
+    	this.sections.add(section);
     }
 
-	public ArrayList<Section> getEdges() {
-		return edges;
+	public ArrayList<Section> getSections() {
+		return sections;
 	}
 
     

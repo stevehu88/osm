@@ -6,7 +6,7 @@ import java.util.HashMap;
 import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 
-import com.sap.nic.osm.converter.EdgeProducer;
+import com.sap.nic.osm.converter.SectionProducer;
 import com.sap.nic.osm.converter.NodeConnectionProducer;
 import com.sap.nic.osm.model.Section;
 import com.sap.nic.osm.model.OSMEntity;
@@ -21,8 +21,8 @@ import com.sap.nic.osm.model.OSMWay;
  */
 public class OSMXMLReader extends XMLReader {
 
-	private OSMGraph osmgraph = new OSMGraph();
-
+	private static OSMGraph osmgraph;
+	
 	public OSMXMLReader(String filename) {
 		super(filename);
 	}
@@ -61,11 +61,12 @@ public class OSMXMLReader extends XMLReader {
 
 
 	@Override
-	public void parseXML() {
+	public OSMGraph parseXML() {
 		String xmlelement;
 		OSMNode node = new OSMNode();
 		OSMWay way = new OSMWay();
 		HashMap<String, String> hashmap = new HashMap<>();
+		OSMGraph osm = new OSMGraph();
 
 		try {
 			while (parser.hasNext()) {
@@ -92,37 +93,39 @@ public class OSMXMLReader extends XMLReader {
 
 					
 					if (xmlelement.equals("bounds")) {
-						osmgraph.setBbbottom(Double.parseDouble(parser
+						osm.setBbbottom(Double.parseDouble(parser
 								.getAttributeValue(null, "minlat")));
-						osmgraph.setBbtop(Double.parseDouble(parser
+						osm.setBbtop(Double.parseDouble(parser
 								.getAttributeValue(null, "maxlat")));
-						osmgraph.setBbleft(Double.parseDouble(parser
+						osm.setBbleft(Double.parseDouble(parser
 								.getAttributeValue(null, "minlon")));
-						osmgraph.setBbright(Double.parseDouble(parser
+						osm.setBbright(Double.parseDouble(parser
 								.getAttributeValue(null, "maxlon")));
 					}
 
 					if (xmlelement.equals("nd")) {
-						way.addNode(osmgraph.getNode(Long.parseLong(parser
+						way.addNode(osm.getNode(Long.parseLong(parser
 								.getAttributeValue(0))));
 					}
 
 					if (xmlelement.equals("tag")) {
 						hashmap.put(parser.getAttributeValue(null, "k"),
 								parser.getAttributeValue(null, "v"));
-						System.out.println(parser.getAttributeValue(null, "k") + "  " + parser.getAttributeValue(null, "v"));
+//						System.out.println(parser.getAttributeValue(null, "k") + "  " + parser.getAttributeValue(null, "v"));
 					}
 
 					break;
 				case XMLStreamConstants.END_ELEMENT:
 					if (parser.getLocalName() == "node") {
 						node.setHashmap(hashmap);
-						osmgraph.addNode(node);
+						osm.addNode(node);
 					}
 
 					if (parser.getLocalName() == "way") {
 						way.setHashmap(hashmap);
-						String highway_value = way.getValue("highway");
+//						String highway_value = way.getValue("highway");
+						osm.addWay(way);
+/**
 						if (highway_value != null)
 						{
 							if (highway_value.equals("motorway") || highway_value.equals("motorway_link")
@@ -134,6 +137,7 @@ public class OSMXMLReader extends XMLReader {
 									osmgraph.addWay(way);	
 								}
 						}
+**/
 
 					}
 
@@ -147,29 +151,28 @@ public class OSMXMLReader extends XMLReader {
 			e.printStackTrace();
 		}
 	
-		NodeConnectionProducer producer = new NodeConnectionProducer(this.getOSMGraph());
+		NodeConnectionProducer producer = new NodeConnectionProducer(osm);
 		producer.produceNodesConnections();
 	
-		EdgeProducer edgeProducer = new EdgeProducer(this.getOSMGraph());
-		edgeProducer.buildEdgeGraph();
+		SectionProducer sectionProducer = new SectionProducer(osm);
+		sectionProducer.buildSectionGraph();
 
+		return osm;
 	}
-	
-    public void setOSMGraph(OSMGraph osmgraph) {
-        this.osmgraph = osmgraph;
-    }
 
     public OSMGraph getOSMGraph() {
+    	if (osmgraph == null) {
+    		osmgraph = this.parseXML();
+    	}
         return osmgraph;
     }
     
     
     public static void main(String[] args) {
     	OSMXMLReader reader = new OSMXMLReader("nanjing.osm");
-    	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
-    	for(Section edge : osmgraph.getSections()){
-    		System.out.println(edge.getNewid() + " " + edge.getNodes().size());
+    	for(Section section : osmgraph.getSections()){
+        		System.out.println(section.getNewid() + " " + section.getWayType());	
     	}
 
     }

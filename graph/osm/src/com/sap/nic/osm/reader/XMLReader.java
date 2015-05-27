@@ -8,6 +8,8 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
+import com.sap.nic.osm.model.OSMGraph;
+
 /**
  * @author  steve.hu@sap.com
  * @version created at：May 22, 2015 3:17:42 PM
@@ -36,6 +38,6 @@ public abstract class XMLReader {
 		}
 	}
 	
-	public abstract void parseXML();
+	public abstract OSMGraph parseXML();
 	
 }

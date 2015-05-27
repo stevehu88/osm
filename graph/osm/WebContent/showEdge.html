@@ -40,49 +40,55 @@ html,body {height:100%;}
 		}).addTo(map);
 
 		        $.get("/osm/rest/Edge", function(data, status){
-		            var osmEdges = data.osmEdge;
-		            for(var i = 0 ; i < osmEdges.length; i ++) {
-		            	var edge = osmEdges[i];
-//		            	var fromNode = edge.fromNode;
-//		            	var toNode = edge.toNode;
-//		            	var latlngs = [L.latLng(fromNode.latitude, fromNode.longitude), L.latLng(toNode.latitude, toNode.longitude)];
-						var latlngs = [];
-						for(var j = 0; j < edge.nodes.length; j ++)
-						{
-							var node = edge.nodes[j];
-							latlngs.push(L.latLng(node.latitude, node.longitude));
-						}
+		            var sections = data.section;
+		            for(var i = 0 ; i < sections.length; i ++) {
+		            	var section = sections[i];
+		            	if (section.wayType !== null && section.wayType !== undefined) {
+//			            	var fromNode = section.fromNode;
+//			            	var toNode = section.toNode;
+//			            	var latlngs = [L.latLng(fromNode.latitude, fromNode.longitude), L.latLng(toNode.latitude, toNode.longitude)];
+							var latlngs = [];
+							for(var j = 0; j < section.nodes.length; j ++)
+							{
+								var node = section.nodes[j];
+								latlngs.push(L.latLng(node.latitude, node.longitude));
+							}
+							console.log(section.wayType);
 
-		            	
-		            	var defaultStyle = {
-								color: 'red',
-								weight: 5,
-								opacity: 0.6
-		            	};
-		            	
-		            	var highlightStyle = {
-		            		    color: 'green',
-		            		    weight: 8,
-		            		    opacity: 0.9
-		            		};
-		            	
-		            	
-		            	var polyline = L.polyline(latlngs, defaultStyle).addTo(map);
-		            	polyline.selected = false;
-		            	
-		            	polyline.on('click', function(e) {
-		            		if (polyline.selected)
-		            		{
-		            			polyline.selected = false;
-		            			e.target.setStyle(defaultStyle);
-		            		}
-		            		else
-		            		{
-		            			polyline.selected = true;
-		            			e.target.setStyle(highlightStyle);
-		            		}
-		            		
-		            	});
+			            	
+			            	var defaultStyle = {
+									color: 'red',
+									weight: 5,
+									opacity: 0.6
+			            	};
+			            	
+			            	var highlightStyle = {
+			            		    color: 'green',
+			            		    weight: 8,
+			            		    opacity: 0.9
+			            		};
+			            	
+			            	
+			            	var polyline = L.polyline(latlngs, defaultStyle).addTo(map);
+			            	polyline.selected = false;
+			            	polyline.section = section;
+			            	
+			            	polyline.on('click', function(e) {
+			            		console.log(e.target.section.wayType);
+			            		if (e.target.selected)
+			            		{
+			            			e.target.selected = false;
+			            			e.target.setStyle(defaultStyle);
+			            		}
+			            		else
+			            		{
+			            			e.target.selected = true;
+			            			e.target.setStyle(highlightStyle);
+			            		}
+			            		
+			            	});
+		            	}
+
 		            }
 		        });
 		});

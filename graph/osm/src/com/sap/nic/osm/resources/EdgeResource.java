@@ -26,7 +26,6 @@ public class EdgeResource {
 	public Response queryEdges() {
 		String path = this.getClass().getResource("/nanjing.osm").getPath();
 		OSMXMLReader reader = new OSMXMLReader(path);
-    	reader.parseXML();
     	OSMGraph osmgraph = reader.getOSMGraph();
     	ArrayList<Section> list = osmgraph.getSections();
     	GenericEntity entity = new GenericEntity<List<Section>>(list) {};

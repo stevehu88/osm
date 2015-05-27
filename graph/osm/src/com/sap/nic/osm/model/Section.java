@@ -22,7 +22,9 @@ public class Section {
 	
 	private long newid;
 	
-	private long backEdgeId;
+	private long backSectionId;
+	
+	private String wayType;
 	
 	public OSMNode getFromNode() {
 		return fromNode;
@@ -44,6 +46,14 @@ public class Section {
 		this.nodes = nodes;
 	}
 	
+	public ArrayList<OSMWay> getWays() {
+		return ways;
+	}
+
+	public void setWays(ArrayList<OSMWay> ways) {
+		this.ways = ways;
+	}
+
 	public void addWay(OSMWay way) {
 		this.ways.add(way);
 	}
@@ -56,11 +66,19 @@ public class Section {
 		this.newid = newid;
 	}
 
-	public long getBackEdgeId() {
-		return backEdgeId;
+	public long getBackSectionId() {
+		return backSectionId;
 	}
 
-	public void setBackEdgeId(long backEdgeId) {
-		this.backEdgeId = backEdgeId;
+	public void setBackSectionId(long backEdgeId) {
+		this.backSectionId = backEdgeId;
+	}
+	
+	public void setWayType(String wayType) {
+		this.wayType = wayType;
+	}
+
+	public String getWayType() {
+		return this.wayType;
 	}
 }
